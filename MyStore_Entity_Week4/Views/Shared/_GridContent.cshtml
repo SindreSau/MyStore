@@ -1,0 +1,8 @@
+@model MyStore_Entity_Week4.ViewModels.ItemsViewModel
+
+<div class="row justify-content-sm-start justify-content-center gap-2 gap-md-4 gap-sm-3">
+    @foreach (var item in Model.Items)
+    {
+        <partial name="_ItemCard" model="item"/>
+    }
+</div>

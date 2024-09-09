@@ -8,23 +8,48 @@ namespace MyStore_Entity_Week4.Controllers;
 
 public class ItemController(ItemDbContext db) : Controller
 {
-    public IActionResult Table()
+    public async Task<IActionResult> Table(string searchString)
     {
-        var items = db.Items.ToList();
+        var items = await FilterItems(searchString);
+
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            return PartialView("_ItemTable", items);
+
         var itemsViewModel = new ItemsViewModel(items, "Table");
+        ViewData["CurrentFilter"] = searchString;
         return View(itemsViewModel);
     }
 
-    public IActionResult Grid()
+    public async Task<IActionResult> Grid(string searchString)
     {
-        var items = db.Items.ToList();
+        var items = await FilterItems(searchString);
+
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            return PartialView("_GridContent", new ItemsViewModel(items, "Grid"));
+
         var itemsViewModel = new ItemsViewModel(items, "Grid");
+        ViewData["CurrentFilter"] = searchString;
         return View(itemsViewModel);
     }
 
-    public IActionResult Details(int id)
+    private async Task<List<Item>> FilterItems(string searchString)
     {
-        var item = db.Items.FirstOrDefault(i => i.ItemId == id);
+        var items = from i in db.Items
+            select i;
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            searchString = searchString.ToLower();
+            items = items.Where(s => EF.Functions.Like(s.Name.ToLower(), $"%{searchString}%")
+                                     || EF.Functions.Like(s.Description.ToLower(), $"%{searchString}%"));
+        }
+
+        return await items.ToListAsync();
+    }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        var item = await db.Items.FirstOrDefaultAsync(i => i.ItemId == id);
 
         if (item == null) return NotFound();
 
@@ -38,15 +63,40 @@ public class ItemController(ItemDbContext db) : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(Item item)
+    public async Task<IActionResult> Create(Item item)
     {
         if (ModelState.IsValid)
         {
             db.Items.Add(item);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return RedirectToAction(nameof(Table));
         }
 
         return View(item);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Update(Item item)
+    {
+        if (ModelState.IsValid)
+        {
+            db.Items.Update(item);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(Table));
+        }
+
+        return View(item);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var item = await db.Items.FirstOrDefaultAsync(i => i.ItemId == id);
+
+        if (item == null) return NotFound();
+
+        db.Items.Remove(item);
+        await db.SaveChangesAsync();
+        return RedirectToAction(nameof(Table));
     }
 }

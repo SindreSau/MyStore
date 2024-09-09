@@ -1,33 +1,14 @@
-namespace MyStore_Entity_Week4.Models
+namespace MyStore_Entity_Week4.Models;
+
+public class Item
 {
-    /// <summary>
-    /// Represents an item in the store.
-    /// </summary>
-    public class Item
-    {
-        /// <summary>
-        /// Gets or sets the unique identifier for the item.
-        /// </summary>
-        public int ItemId { get; set; }
-    
-        /// <summary>
-        /// Gets or sets the name of the item.
-        /// </summary>
-        public string Name { get; set; } = String.Empty;
-    
-        /// <summary>
-        /// Gets or sets the price of the item.
-        /// </summary>
-        public decimal Price { get; set; }
-    
-        /// <summary>
-        /// Gets or sets the description of the item.
-        /// </summary>
-        public string? Description { get; set; }
-    
-        /// <summary>
-        /// Gets or sets the URL of the item's image.
-        /// </summary>
-        public string? ImageUrl { get; set; }
-    }
+    public int ItemId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public decimal Price { get; set; }
+    public string? Description { get; set; }
+
+    public string? ImageUrl { get; set; }
+
+    // navigation property
+    public virtual List<OrderItem> OrderItems { get; set; } = new();
 }

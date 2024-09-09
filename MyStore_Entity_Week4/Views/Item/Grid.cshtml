@@ -4,15 +4,50 @@
     ViewData["Title"] = "Grid";
 }
 
-
 <h1>List of Shop Items (@Model.CurrentViewName View)</h1>
 <a href="/Item/Table" class="link-info">Table View</a>
 
-<div class="container text-center text-sm-start ">
-    <div class="row justify-content-sm-start justify-content-center gap-2 gap-md-4 gap-sm-3">
-        @foreach (var item in Model.Items)
-        {
-            <partial name="_ItemCard" model="item"/>
-        }
+<div class=" mt-3">
+    <div class="row ">
+        <div class="">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search" id="searchInput" value="@ViewData["CurrentFilter"]">
+                <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+            </div>
+        </div>
     </div>
 </div>
+
+<div id="gridContainer" class="container text-center text-sm-start">
+    <partial name="_GridContent" model="Model"/>
+</div>
+
+@section Scripts {
+    <script>
+    let searchTimer;
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const gridContainer = document.getElementById('gridContainer');
+
+    function performSearch() {
+        const searchString = searchInput.value;
+        fetch(`/Item/Grid?searchString=${encodeURIComponent(searchString)}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => response.text())
+            .then(html => {
+                gridContainer.innerHTML = html;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(performSearch, 300);
+    });
+
+    searchButton.addEventListener('click', performSearch);
+</script>
+}
