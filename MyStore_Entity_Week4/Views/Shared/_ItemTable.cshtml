@@ -1,0 +1,40 @@
+@model IEnumerable<MyStore_Entity_Week4.Models.Item>
+
+<div class="container">
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="align-middle">@item.ItemId</td>
+                <td class="align-middle">
+                    <a asp-controller="Item"
+                       asp-action="Details"
+                       asp-route-id="@item.ItemId">
+                        <img alt="@item.Name" src="@item.ImageUrl" class="img-thumbnail" style="max-width: 45px; aspect-ratio: 1/1; object-fit: cover"/>
+                    </a>
+                </td>
+                <td class="align-middle">
+                    <a asp-controller="Item"
+                       asp-action="Details"
+                       asp-route-id="@item.ItemId">
+                        @item.Name
+                    </a>
+                </td>
+                <td class="align-middle">@item.Price.ToString("C")</td>
+                <td class="align-middle">@item.Description</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <a class="btn btn-primary" asp-controller="Item" asp-action="Create">Create New Item</a>
+</div>

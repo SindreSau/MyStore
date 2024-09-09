@@ -1,0 +1,18 @@
+@model MyStore_Entity_Week4.Models.Item
+
+@{
+    ViewData["Title"] = @Model.Name;
+}
+
+<div class="row gx-5 my-5">
+    <img alt="@Model.Name" src="@Model.ImageUrl" class="img-fluid col-4"/>
+    <div class="col-5">
+        <h1 >
+            @Model.Name
+        </h1>
+        <p class="">@Model.Description</p>
+        <p class="">@Model.Price.ToString("C")</p>
+        <a href="/Item/Table" class="btn btn-outline-secondary">← Table View</a>
+        <a href="/Item/Grid" class="btn btn-outline-secondary">← Grid View</a>
+    </div>
+</div>

@@ -5,9 +5,10 @@ namespace MyStore_Entity_Week4.Data;
 
 public class ItemDbContext : DbContext
 {
-    protected ItemDbContext(DbContextOptions<ItemDbContext> options) : base(options)
+    public ItemDbContext(DbContextOptions<ItemDbContext> options) : base(options)
     {
+        Database.EnsureCreated();
     }
 
-    public DbSet<Item> Items { get; set; }
+    public DbSet<Item?> Items { get; set; }
 }

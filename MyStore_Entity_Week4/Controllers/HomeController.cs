@@ -1,21 +1,14 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using MyStore_Entity_Week4.Data;
+using MyStore_Entity_Week4.Models;
 
 namespace MyStore_Entity_Week4.Controllers;
 
-public class HomeController : Controller
+public class HomeController(ItemDbContext db) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
-        return View();
+        var carouselItems = db.Items.ToList().GetRange(0, 3);
+        return View(carouselItems);
     }
-
-    
 }

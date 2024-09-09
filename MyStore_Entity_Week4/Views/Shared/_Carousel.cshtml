@@ -1,0 +1,71 @@
+@model List<MyStore_Entity_Week4.Models.Item>
+
+<style>
+    .carousel-item {
+        height: 300px;
+    }
+    .carousel-item img {
+        object-fit: contain;
+        object-position: center;
+        width: 100%;
+        height: 100%;
+    }
+    .carousel-caption {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 5px;
+        position: absolute;
+        top: 0px;
+        height: 45px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        max-width: 90%;
+    }
+    .carousel-control-prev, .carousel-control-next {
+        background-color: rgba(0, 0, 0, 0.5);
+        width: 5%;
+    }
+    .carousel-indicators {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px;
+        border-radius: 15px;
+        bottom: 0px; /* Adjust as needed */
+    }
+    #itemCarousel {
+        background-color: #f8f9fa;
+    }
+</style>
+
+<div id="itemCarousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Carousel items -->
+    <div class="carousel-inner">
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            <div class="carousel-item @(i == 0 ? "active" : "")">
+                <img src="@Model[i].ImageUrl" alt="@Model[i].Name">
+                <div class="carousel-caption">
+                    <h5>@Model[i].Name</h5>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Carousel indicators -->
+    <ol class="carousel-indicators">
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            <li data-bs-target="#itemCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+        }
+    </ol>
+
+    <!-- Carousel controls -->
+    <a class="carousel-control-prev" href="#itemCarousel" role="button" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#itemCarousel" role="button" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </a>
+</div>

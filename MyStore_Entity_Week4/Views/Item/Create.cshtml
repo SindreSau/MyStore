@@ -1,0 +1,33 @@
+@model MyStore_Entity_Week4.Models.Item
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create new item</h1>
+<hr/>
+
+<form asp-action="Create">
+    <div class="form-group my-2">
+        <label asp-for="Name">Name</label><span class="text-danger">*</span>
+        <input asp-for="Name" class="form-control" placeholder="Name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group my-2">
+        <label asp-for="Price">Price</label><span class="text-danger">*</span>
+        <input asp-for="Price" class="form-control" placeholder="Price">
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group my-2">
+        <label asp-for="Description">Description</label><span class="text-danger">*</span>
+        <input asp-for="Description" class="form-control" placeholder="Description">
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group my-2">
+        <label asp-for="ImageUrl">ImageUrl</label><span class="text-danger">*</span>
+        <input asp-for="ImageUrl" class="form-control" placeholder="ImageUrl">
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
